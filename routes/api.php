@@ -19,6 +19,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::group(['middleware' => ['auth:sanctum']], function () {
+    // put all routes under here
+}
+
+);
 
 Route::get('/users',[userController::class,'index']);
 // Route::post('/register',[userController::class,'register']);
@@ -39,9 +44,10 @@ Route::delete('/category/{category_id}', 'App\Http\Controllers\categorycontrolle
 
 //product api routes
 Route::get('/products', 'App\Http\Controllers\ProductController@index');
+Route::get('/fetchProductwhitcategories', 'App\Http\Controllers\ProductController@fetchProductwhitcategories');
 Route::get('/products/{products_id}', 'App\Http\Controllers\productcontroller@show');
 Route::post('/products', 'App\Http\Controllers\productcontroller@store');
-Route::post('/products/{products_id}', 'App\Http\Controllers\productcontroller@update');
+Route::put('/products/{products_id}', 'App\Http\Controllers\productcontroller@update');
 Route::delete('/products/{products_id}', 'App\Http\Controllers\productcontroller@destroy');
 
 
@@ -67,3 +73,7 @@ Route::get('/colors', 'App\Http\Controllers\ProductcolorsController@index');
 Route::get('/colors/{id}', 'App\Http\Controllers\ProductcolorsController@show');
 Route::post('/colors', 'App\Http\Controllers\ProductcolorsController@create');
 Route::delete('/colors/{id}', 'App\Http\Controllers\ProductcolorsController@destroy');
+
+// product variations api routes
+Route::get('/variations', 'App\Http\Controllers\productVariants@index');
+Route::get('/variations/{product_id}', 'App\Http\Controllers\productVariants@find');

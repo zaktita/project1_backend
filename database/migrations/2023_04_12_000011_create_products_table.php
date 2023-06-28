@@ -19,15 +19,12 @@ return new class extends Migration
             $table->string('title', 2000);
             $table->string('slug', 2000);
             $table->longText('description')->nullable();
-            // $table->foreignId('category_id')->references('category_id')->on('categories');
-            $table->string('category_id')->nullable();
-            $table->string('colors')->nullable();
-            $table->string('sizes')->nullable();
+            $table->text('category_id')->nullable();
+            $table->text('colors')->nullable();
+            $table->text('sizes')->nullable();
             $table->integer('quantity')->nullable();
             $table->decimal('price', 10, 2);
             $table->string('image', 2000)->nullable();
-            // $table->foreignIdFor(User::class, 'created_by')->nullable();
-            // $table->foreignIdFor(User::class, 'updated_by')->nullable();
             $table->softDeletes();
             $table->foreignIdFor(User::class, 'deleted_by')->nullable();
             $table->timestamps();

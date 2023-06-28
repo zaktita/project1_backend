@@ -16,24 +16,7 @@ class CategoryController extends Controller
         ]);
     }
 
-    // public function store(Request $request)
-    // {
-    //     $validatedData = $request->validate([
-    //         'category_name' => 'required|string',
-    //         'category_slug' => 'required|string',
-    //         'category_description' => 'required|text',
-    //         'image' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
-    //         // Add validation rules for other attributes
-    //     ]);
-
-
-    //     $category = Category::create($validatedData);
-
-    //     return response()->json([
-    //         'data' => $category,
-    //         'message' => 'Category created successfully.',
-    //     ]);
-    // }
+  
 
     public function store(Request $request)
     {
@@ -42,9 +25,6 @@ class CategoryController extends Controller
             'category_slug' => 'required|string',
             'category_description' => 'required|string',
             'category_image' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
-
-            // 'image' => 'required|array|max:8',
-            // 'image.*' => 'image|mimes:jpeg,png,jpg,gif,webp|max:2048',
         ]);
 
         if ($request->hasFile('category_image')) {
