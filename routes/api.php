@@ -15,7 +15,8 @@ use App\Http\Controllers\websiteUsersController;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) 
+{
     return $request->user();
 });
 
@@ -30,9 +31,9 @@ Route::get('/users',[userController::class,'index']);
 // Route::post('/register', [AuthController::class, 'register']);
 
 // User Authentication
-Route::post('/login', 'App\Http\Controllers\websiteUsersController@login');
-Route::post('/register', 'App\Http\Controllers\websiteUsersController@register');
-// Route::post('/register', 'App\Http\Controllers\AuthController@register');
+Route::post('/login', 'App\Http\Controllers\userController@login');
+Route::post('/register', 'App\Http\Controllers\userController@register');
+Route::post('/register', 'App\Http\Controllers\AuthController@register');
 
 
 //category api routes
@@ -45,7 +46,7 @@ Route::delete('/category/{category_id}', 'App\Http\Controllers\categorycontrolle
 //product api routes
 Route::get('/products', 'App\Http\Controllers\ProductController@index');
 Route::get('/fetchProductwhitcategories', 'App\Http\Controllers\ProductController@fetchProductwhitcategories');
-Route::get('/products/{products_id}', 'App\Http\Controllers\productcontroller@show');
+Route::get('/products/{products_id}', 'App\Http\Controllers\productVariants@findproductwithimages');
 Route::post('/products', 'App\Http\Controllers\productcontroller@store');
 Route::put('/products/{products_id}', 'App\Http\Controllers\productcontroller@update');
 Route::delete('/products/{products_id}', 'App\Http\Controllers\productcontroller@destroy');

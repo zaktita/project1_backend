@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('product_sizes', function (Blueprint $table) {
             $table->id();
-            $table->json('size')->unique();
+            $table->integer('size')->unique();
             $table->timestamps();
         });
     }
