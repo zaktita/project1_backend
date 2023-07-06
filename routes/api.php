@@ -68,7 +68,7 @@ Route::post('/sizes', 'App\Http\Controllers\ProductsizesController@create');
 Route::delete('/sizes/{id}', 'App\Http\Controllers\ProductsizesController@destroy');
 
 
-// sizes api routes
+// colors api routes
 
 Route::get('/colors', 'App\Http\Controllers\ProductcolorsController@index');
 Route::get('/colors/{id}', 'App\Http\Controllers\ProductcolorsController@show');
@@ -77,4 +77,5 @@ Route::delete('/colors/{id}', 'App\Http\Controllers\ProductcolorsController@dest
 
 // product variations api routes
 Route::get('/variations', 'App\Http\Controllers\productVariants@index');
+Route::get('/filters', 'App\Http\Controllers\productVariants@find');
 Route::get('/variations/{product_id}', 'App\Http\Controllers\productVariants@find');

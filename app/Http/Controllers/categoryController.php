@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\Products;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
@@ -52,8 +53,12 @@ class CategoryController extends Controller
     public function show(Category $category, $category_id)
     {
         $category = Category::find($category_id);
+        $products = Products::whereRaw("'[$category_id]' = category_id")
+        ->whereRaw("('[$category_id]' = category_id) > 0")
+        ->get();
         return response()->json([
-            'data' => $category,
+            'category' => $category,
+            'products' => $products,
         ]);
     }
 
