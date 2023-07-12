@@ -50,12 +50,11 @@ class CategoryController extends Controller
 
 
 
-    public function show(Category $category, $category_id)
+    public function show(Category $category, $category_name)
     {
-        $category = Category::find($category_id);
-        $products = Products::whereRaw("'[$category_id]' = category_id")
-        ->whereRaw("('[$category_id]' = category_id) > 0")
-        ->get();
+        $category = Category::where('category_name', $category_name)->first();
+        $products = Products::whereJsonContains('category_id', $category->category_id)->get();
+
         return response()->json([
             'category' => $category,
             'products' => $products,

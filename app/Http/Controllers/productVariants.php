@@ -53,6 +53,8 @@ class productVariants extends Controller
 
         $categoryId = $product->category_id[0];
         $similar_products = Products::whereRaw("'[$categoryId]' = category_id")
+        // $products = Products::whereJsonContains('category_id', $category->category_id)->get();
+
         ->whereRaw("('[$categoryId]' = category_id) > 0")
         ->limit(4)
         ->get();

@@ -38,7 +38,7 @@ Route::post('/register', 'App\Http\Controllers\AuthController@register');
 
 //category api routes
 Route::get('/category', 'App\Http\Controllers\categorycontroller@index');
-Route::get('/category/{category_id}', 'App\Http\Controllers\categorycontroller@show');
+Route::get('/category/{category_name}', 'App\Http\Controllers\categorycontroller@show');
 Route::post('/category', 'App\Http\Controllers\categorycontroller@store');
 Route::post('/category/{category_id}', 'App\Http\Controllers\categorycontroller@update');
 Route::delete('/category/{category_id}', 'App\Http\Controllers\categorycontroller@destroy');
