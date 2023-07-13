@@ -10,7 +10,7 @@ class OrderItemController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'order_detail_id' => 'required|integer',
+            'order_id' => 'required|integer',
             'product_id' => 'required|integer',
             'quantity' => 'required|integer',
             // Add validation rules for other attributes
@@ -27,7 +27,7 @@ class OrderItemController extends Controller
     public function update(Request $request, OrderItem $orderItem)
     {
         $validatedData = $request->validate([
-            'order_detail_id' => 'integer',
+            'order_id' => 'integer',
             'product_id' => 'integer',
             'quantity' => 'integer',
             // Add validation rules for other attributes

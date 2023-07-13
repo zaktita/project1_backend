@@ -51,6 +51,7 @@ Route::post('/products', 'App\Http\Controllers\productcontroller@store');
 Route::put('/products/{products_id}', 'App\Http\Controllers\productcontroller@update');
 Route::delete('/products/{products_id}', 'App\Http\Controllers\productcontroller@destroy');
 
+Route::get('/search/{keyword}', 'App\Http\Controllers\ProductController@search');
 
 // color api routes
 

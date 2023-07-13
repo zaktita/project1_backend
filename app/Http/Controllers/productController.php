@@ -211,4 +211,13 @@ class ProductController extends Controller
             'message' => 'Product deleted successfully.',
         ]);
     }
+
+
+    public function search(string $keyword){
+        $productresults = Products::where('title', 'LIKE' ,'%'.$keyword.'%' )
+        ->get();
+        return response()->json([
+            'products' => $productresults,
+        ]);
+    }
 }
