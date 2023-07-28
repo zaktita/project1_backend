@@ -6,8 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Orders extends Model
 {
+
+    protected $primaryKey = 'order_id';
     protected $fillable = [
-        'customer_id',
+        'total_price',
         'status',
         // Add any other fields you need
     ];
@@ -20,5 +22,9 @@ class Orders extends Model
     public function orderDetails()
     {
         return $this->hasMany(OrderDetail::class);
+    }
+    public function orderItems()
+    {
+        return $this->hasMany(OrderItems::class, 'order_id', 'order_id');
     }
 }

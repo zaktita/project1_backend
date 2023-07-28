@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\OrderDetail;
+
+use App\Models\OrderDetails;
 use Illuminate\Http\Request;
 
 class OrderDetailController extends Controller
@@ -16,7 +17,7 @@ class OrderDetailController extends Controller
             // Add validation rules for other attributes
         ]);
 
-        $orderDetail = OrderDetail::create($validatedData);
+        $orderDetail = OrderDetails::create($validatedData);
 
         return response()->json([
             'data' => $orderDetail,
@@ -24,7 +25,7 @@ class OrderDetailController extends Controller
         ]);
     }
 
-    public function update(Request $request, OrderDetail $orderDetail)
+    public function update(Request $request, OrderDetails $orderDetail)
     {
         $validatedData = $request->validate([
             'order_id' => 'integer',
@@ -41,7 +42,7 @@ class OrderDetailController extends Controller
         ]);
     }
 
-    public function destroy(OrderDetail $orderDetail)
+    public function destroy(OrderDetails $orderDetail)
     {
         $orderDetail->delete();
 

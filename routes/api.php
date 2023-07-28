@@ -80,3 +80,11 @@ Route::delete('/colors/{id}', 'App\Http\Controllers\ProductcolorsController@dest
 Route::get('/variations', 'App\Http\Controllers\productVariants@index');
 Route::get('/filters', 'App\Http\Controllers\productVariants@find');
 Route::get('/variations/{product_id}', 'App\Http\Controllers\productVariants@find');
+
+
+// order api routes
+Route::get('/orders', 'App\Http\Controllers\OrderController@index');
+Route::get('/orders/{order_id}', 'App\Http\Controllers\OrderController@show');
+Route::post('/orders', 'App\Http\Controllers\OrderController@store');
+Route::put('/orders/{order_id}', 'App\Http\Controllers\OrderController@update');
+Route::delete('/orders/{order_id}', 'App\Http\Controllers\OrderController@destroy');

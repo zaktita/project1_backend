@@ -13,13 +13,15 @@ return new class extends Migration
     {
         Schema::create('order_details', function (Blueprint $table) {
             $table->id('details_id');
+            $table->foreignId('order_id')->references('order_id')->on('orders')->onDelete('cascade');
             $table->string('first_name');
             $table->string('last_name');
             $table->integer('phone');
+            $table->string('email');
             $table->string('adresse');
             $table->string('city');
+            $table->string('country');
             $table->integer('zipcode');
-            
             $table->timestamps();
         });
     }
