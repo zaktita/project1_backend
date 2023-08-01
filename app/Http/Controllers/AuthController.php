@@ -5,15 +5,20 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+
+use Illuminate\Validation\Rules\Password as RulesPassword;
 
 class AuthController extends Controller
 {
-    public function register(Request $request) {
+    public function register(Request $request)
+    {
+
         $fields = $request->validate([
             'name' => 'required|string',
-            'email' => 'required|string',
-            'password' => 'required|string'
+            'email' => 'required|string|email|unique:users,email',
+            'password' => ['required', 'confirmed', RulesPassword::min(6)->mixedCase()->numbers()->symbols()]
         ]);
 
         $user = User::create([
@@ -32,7 +37,11 @@ class AuthController extends Controller
         return response($response, 201);
     }
 
-    public function login(Request $request) {
+
+
+
+    public function login(Request $request)
+    {
         $fields = $request->validate([
             'email' => 'required|string',
             'password' => 'required|string'
@@ -42,13 +51,15 @@ class AuthController extends Controller
         $user = User::where('email', $fields['email'])->first();
 
         // Check password
-        if(!$user || !Hash::check($fields['password'], $user->password)) {
+        if (!$user || !Hash::check($fields['password'], $user->password)) {
             return response([
                 'message' => 'Bad creds'
             ], 401);
         }
 
+        /** @var \App\Models\User $user **/
         $token = $user->createToken('myapptoken')->plainTextToken;
+
 
         $response = [
             'user' => $user,
@@ -58,11 +69,22 @@ class AuthController extends Controller
         return response($response, 201);
     }
 
-    // public function logout(Request $request) {
-    //     auth()->user()->tokens()->delete();
 
-    //     return [
-    //         'message' => 'Logged out'
-    //     ];
-    // }
+    public function logout(Request $request)
+    {
+
+        if (auth()->check()) {
+            /** @var \App\Models\User $user */
+            // $user = auth()->user();
+            $user = $request->user();
+            $user->tokens()->delete();
+            return response([
+                'message' => 'User logged out'
+            ], 200);
+        } else {
+            return response([
+                'message' => 'User not found'
+            ], 401);
+        }
+    }
 }

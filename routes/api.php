@@ -26,14 +26,11 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
 );
 
-Route::get('/users',[userController::class,'index']);
-// Route::post('/register',[userController::class,'register']);
-// Route::post('/register', [AuthController::class, 'register']);
-
 // User Authentication
-Route::post('/login', 'App\Http\Controllers\userController@login');
-Route::post('/register', 'App\Http\Controllers\userController@register');
+
 Route::post('/register', 'App\Http\Controllers\AuthController@register');
+Route::post('/login', 'App\Http\Controllers\AuthController@login');
+Route::post('/logout', 'App\Http\Controllers\AuthController@logout')->middleware('auth:sanctum');
 
 
 //category api routes
