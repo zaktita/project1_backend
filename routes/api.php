@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\userController;
+use App\Http\Controllers\CouponController;
 use App\Http\Controllers\websiteUsersController;
 /*
 |--------------------------------------------------------------------------
@@ -31,6 +31,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 Route::post('/register', 'App\Http\Controllers\AuthController@register');
 Route::post('/login', 'App\Http\Controllers\AuthController@login');
 Route::post('/logout', 'App\Http\Controllers\AuthController@logout')->middleware('auth:sanctum');
+Route::post('/user/{id}', 'App\Http\Controllers\AuthController@updateUser')->middleware('auth:sanctum');
+
 
 
 //category api routes
@@ -50,6 +52,11 @@ Route::delete('/products/{products_id}', 'App\Http\Controllers\productcontroller
 
 Route::get('/search/{keyword}', 'App\Http\Controllers\ProductController@search');
 
+
+// product variations api routes
+Route::get('/variations', 'App\Http\Controllers\productVariants@index');
+Route::get('/variations/{product_id}', 'App\Http\Controllers\productVariants@find');
+// Route::get('/filters', 'App\Http\Controllers\productVariants@find');
 // color api routes
 
 Route::get('/colors', 'App\Http\Controllers\ProductColorsController@index');
@@ -73,10 +80,14 @@ Route::get('/colors/{id}', 'App\Http\Controllers\ProductcolorsController@show');
 Route::post('/colors', 'App\Http\Controllers\ProductcolorsController@create');
 Route::delete('/colors/{id}', 'App\Http\Controllers\ProductcolorsController@destroy');
 
-// product variations api routes
-Route::get('/variations', 'App\Http\Controllers\productVariants@index');
-Route::get('/filters', 'App\Http\Controllers\productVariants@find');
-Route::get('/variations/{product_id}', 'App\Http\Controllers\productVariants@find');
+// Coupons api routes
+
+Route::get('/coupon', 'App\Http\Controllers\CouponController@index');
+Route::get('/coupon/{id}', 'App\Http\Controllers\CouponController@show');
+Route::post('/coupon', 'App\Http\Controllers\CouponController@store');
+Route::post('/coupon/{code}', 'App\Http\Controllers\CouponController@find');
+Route::delete('/coupon/{id}', 'App\Http\Controllers\CouponController@destroy');
+
 
 
 // order api routes
@@ -85,3 +96,12 @@ Route::get('/orders/{order_id}', 'App\Http\Controllers\OrderController@show');
 Route::post('/orders', 'App\Http\Controllers\OrderController@store');
 Route::put('/orders/{order_id}', 'App\Http\Controllers\OrderController@update');
 Route::delete('/orders/{order_id}', 'App\Http\Controllers\OrderController@destroy');
+
+// notifications api routes
+Route::get('/notifications', 'App\Http\Controllers\NotificationController@index');
+Route::delete('/notifications/{id}', 'App\Http\Controllers\NotificationController@destroy');
+Route::delete('/notifications', 'App\Http\Controllers\NotificationController@destroyALL');
+
+// payement api routes 
+Route::post('/stripe', 'App\Http\Controllers\CheckoutController@createPaymentIntent');
+

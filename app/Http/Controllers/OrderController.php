@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-
+use App\Models\Notification;
 use App\Models\OrderDetails;
 use App\Models\OrderItem;
 use App\Models\OrderItems;
@@ -15,9 +15,12 @@ class OrderController extends Controller
     public function index()
     {
         $orders = Orders::withCount('orderItems')->get();
-
+        $items = OrderItems::all();
+        $details = OrderDetails::all();
         return response()->json([
             'orders' => $orders,
+            'items'=>$items,
+            'details'=> $details,
         ]);
     }
 
@@ -28,13 +31,14 @@ class OrderController extends Controller
         $orderId = 0;
         $validatedData = $request->validate([
             'total_price' => 'required|numeric',
-            'status' => 'string'
+            'status' => 'string',
+            'payement_method' => 'string',
+            'discount' => 'integer',
         ]);
 
         try {
             $order = Orders::create($validatedData);
             $orderId = $order['order_id'];
-
 
             $validatedOrderItemsData['order_id'] = $orderId;
 
@@ -81,11 +85,13 @@ class OrderController extends Controller
                 }
                 $orderItems[] = $orderItem;
             };
+            $notification = Notification::create(['order_id' => $orderId]);
 
             $responseData = [
                 'order' => $order,
                 'order_details' => $orderDetails,
                 'order_item' => $orderItems,
+                'notification' => $notification,
                 'message' => 'Order created successfully.',
             ];
 

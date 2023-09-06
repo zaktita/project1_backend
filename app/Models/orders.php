@@ -11,6 +11,8 @@ class Orders extends Model
     protected $fillable = [
         'total_price',
         'status',
+        'discount',
+        'payement_method',
         // Add any other fields you need
     ];
 

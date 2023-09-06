@@ -21,10 +21,14 @@ class AuthController extends Controller
             'password' => ['required', 'confirmed', RulesPassword::min(6)->mixedCase()->numbers()->symbols()]
         ]);
 
+
+        $imageUrl = asset('storage/' . 'images/avatar.webp');
+        
         $user = User::create([
             'name' => $fields['name'],
             'email' => $fields['email'],
-            'password' => bcrypt($fields['password'])
+            'password' => bcrypt($fields['password']),
+            'image' => $imageUrl,
         ]);
 
         $token = $user->createToken('myapptoken')->plainTextToken;
@@ -87,4 +91,79 @@ class AuthController extends Controller
             ], 401);
         }
     }
+
+    // public function updateUser(Request $request, string $id)
+    // {
+    //     $fields = $request->validate([
+    //         'name' => 'string',
+    //         'email' => 'string|email:users,email',
+    //         'password' => [ 'confirmed', RulesPassword::min(6)->mixedCase()->numbers()->symbols()]
+    //     ]);
+
+
+    //     $user = User::find($id);
+
+    //     if (!$user) {
+    //         return response()->json([
+    //             'message' => 'User not found.',
+    //         ], 404);
+    //     }
+    
+    //     if ($request->hasFile('image')) {
+    //         $image = $request->file('image');
+    //         $imagePath = $image->store('images', 'public');
+    //         $imageUrl = asset('storage/' . $imagePath);
+    //         $fields['image'] = $imageUrl;
+    //     }
+
+    //     $user->update($fields);
+    //     $user->update(['password' => bcrypt($fields['password'])
+    // ]);
+    //     return response()->json([
+    //         'data' => $user,
+    //         'message' => 'user updated successfully.',
+    //     ]);
+    // }
+
+    public function updateUser(Request $request, string $id)
+{
+    $user = User::find($id);
+
+    if (!$user) {
+        return response()->json([
+            'message' => 'User not found.',
+        ], 404);
+    }
+
+    // Define the fields that are allowed to be updated
+    $allowedFields = [
+        'name',
+        'email',
+    ];
+
+    // Filter the request data to include only allowed fields
+    $fieldsToUpdate = $request->only($allowedFields);
+
+    // Handle image upload if an image file is included in the request
+    if ($request->hasFile('image')) {
+        $image = $request->file('image');
+        $imagePath = $image->store('images', 'public');
+        $imageUrl = asset('storage/' . $imagePath);
+        $fieldsToUpdate['image'] = $imageUrl;
+    }
+
+    // Check if the 'password' field is present and not empty in the request
+    if ($request->filled('password')) {
+        $fieldsToUpdate['password'] = bcrypt($request->input('password'));
+    }
+
+    // Update the user with the provided fields
+    $user->update($fieldsToUpdate);
+
+    return response()->json([
+        'data' => $user,
+        'message' => 'User updated successfully.',
+    ]);
+}
+
 }

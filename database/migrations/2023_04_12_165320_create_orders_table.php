@@ -13,9 +13,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('orders', function (Blueprint $table) {            
-            $table->id('order_id');
+            $table->id('order_id')->cascade();
             $table->decimal('total_price', 20, 2);
             $table->string('status', 45);
+            $table->string('payement_method');
+            $table->integer('discount');
             $table->timestamps();
         });
     }

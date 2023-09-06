@@ -22,7 +22,8 @@ class userController extends Controller
         $user = User::create([
             'name' => $fields['name'],
             'email' => $fields['email'],
-            'password' => bcrypt($fields['password'])
+            'password' => bcrypt($fields['password']),
+            'image' => '/storage/images/avatar.webp'
         ]);
 
         $token = $user->createToken('myapptoken')->plainTextToken;
@@ -63,7 +64,33 @@ class userController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $fields = $request->validate([
+            'name' => 'required|string',
+            'email' => 'required|string|email|unique:users,email',
+            'password' => ['required', 'confirmed', FacadesPassword::min(6)->mixedCase()->numbers()->symbols()]
+        ]);
+
+
+        $user = User::find($id);
+
+        if (!$user) {
+            return response()->json([
+                'message' => 'User not found.',
+            ], 404);
+        }
+    
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $imagePath = $image->store('images', 'public');
+            $imageUrl = asset('storage/' . $imagePath);
+            $validatedData['image'] = $imageUrl;
+        }
+
+        $user->update($fields);
+        return response()->json([
+            'data' => $user,
+            'message' => 'user updated successfully.',
+        ]);
     }
 
     /**
