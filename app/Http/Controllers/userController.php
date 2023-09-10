@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password as FacadesPassword;
 
 
-class userController extends Controller
+class UserController extends Controller
 {
 
     public function register(Request $request) {

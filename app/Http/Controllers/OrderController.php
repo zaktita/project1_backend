@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Notification;
 use App\Models\OrderDetails;
-use App\Models\OrderItem;
 use App\Models\OrderItems;
 use App\Models\Orders;
 use App\Models\Products;

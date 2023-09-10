@@ -55,9 +55,9 @@ class ProductController extends Controller
         if ($request->hasFile('image') && $request->hasFile('product_images')) {
             $image = $request->file('image');
             $imagePath = $image->store('main', 'public');
-            // $imageUrl = asset('storage/' . $imagePath);
+            $imageUrl = asset('storage/' . $imagePath);
 
-            $validatedData['image'] = $imagePath;
+            $validatedData['image'] = $imageUrl;
             $validatedData['sizes'] = $sizes;
             $validatedData['colors'] = $colors;
             $validatedData['category_id'] = $category;
@@ -66,7 +66,7 @@ class ProductController extends Controller
             $product = Products::create($validatedData);
             foreach ($request->file('product_images') as $product_images) {
                 $product_imagesPath = $product_images->store('secondary', 'public');
-                // $product_imagesUrl = asset('storage/' . $product_imagesPath);
+                $product_imagesUrl = asset('storage/' . $product_imagesPath);
 
 
                 //  $product_images   = ProductImage::create([
@@ -76,7 +76,7 @@ class ProductController extends Controller
 
                 DB::table('product_images')->insert([
                     'product_id' => $product->product_id,
-                    'filename' => $product_imagesPath,
+                    'filename' => $product_imagesUrl,
                 ]);
             }
 

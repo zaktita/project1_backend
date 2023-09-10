@@ -1,107 +1,74 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\CouponController;
-use App\Http\Controllers\websiteUsersController;
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "api" middleware group. Make something great!
-|
-*/
-
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) 
-{
-    return $request->user();
-});
-
-Route::group(['middleware' => ['auth:sanctum']], function () {
-    // put all routes under here
-}
-
-);
+use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\ProductColorsController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ProductSizesController;
+use App\Http\Controllers\ProductVariantsController;
 
 // User Authentication
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/login', [AuthController::class, 'login']);
+Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
+Route::post('/user/{id}', [AuthController::class, 'updateUser'])->middleware('auth:sanctum');
 
-Route::post('/register', 'App\Http\Controllers\AuthController@register');
-Route::post('/login', 'App\Http\Controllers\AuthController@login');
-Route::post('/logout', 'App\Http\Controllers\AuthController@logout')->middleware('auth:sanctum');
-Route::post('/user/{id}', 'App\Http\Controllers\AuthController@updateUser')->middleware('auth:sanctum');
+// Category API routes
+Route::get('/category', [CategoryController::class, 'index']);
+Route::get('/category/{category_name}', [categorycontroller::class, 'show']);
+Route::post('/category', [categorycontroller::class, 'store']);
+Route::post('/category/{category_id}', [categorycontroller::class, 'update']);
+Route::delete('/category/{category_id}', [categorycontroller::class, 'destroy']);
 
+// Product API routes
+Route::get('/products', [ProductController::class, 'index']);
+Route::get('/fetchProductwhitcategories', [ProductController::class, 'fetchProductwhitcategories']);
+Route::get('/products/{products_id}', [ProductVariantsController::class, 'findproductwithimages']);
+Route::post('/products', [ProductController::class, 'store']);
+Route::put('/products/{products_id}', [ProductController::class, 'update']);
+Route::delete('/products/{products_id}', [ProductController::class, 'destroy']);
+Route::get('/search/{keyword}', [ProductController::class, 'search']);
 
+// Product Variations API routes
+Route::get('/variations', [ProductVariantsController::class, 'index']);
+Route::get('/variations/{product_id}', [ProductVariantsController::class, 'find']);
 
-//category api routes
-Route::get('/category', 'App\Http\Controllers\categorycontroller@index');
-Route::get('/category/{category_name}', 'App\Http\Controllers\categorycontroller@show');
-Route::post('/category', 'App\Http\Controllers\categorycontroller@store');
-Route::post('/category/{category_id}', 'App\Http\Controllers\categorycontroller@update');
-Route::delete('/category/{category_id}', 'App\Http\Controllers\categorycontroller@destroy');
+// Sizes API routes
+Route::get('/sizes', [ProductSizesController::class, 'index']);
+Route::get('/sizes/{id}', [ProductsizesController::class, 'show']);
+Route::post('/sizes', [ProductsizesController::class, 'create']);
+Route::delete('/sizes/{id}', [ProductsizesController::class, 'destroy']);
 
-//product api routes
-Route::get('/products', 'App\Http\Controllers\ProductController@index');
-Route::get('/fetchProductwhitcategories', 'App\Http\Controllers\ProductController@fetchProductwhitcategories');
-Route::get('/products/{products_id}', 'App\Http\Controllers\productVariants@findproductwithimages');
-Route::post('/products', 'App\Http\Controllers\productcontroller@store');
-Route::put('/products/{products_id}', 'App\Http\Controllers\productcontroller@update');
-Route::delete('/products/{products_id}', 'App\Http\Controllers\productcontroller@destroy');
+// Colors API routes
+Route::get('/colors', [ProductColorsController::class, 'index']);
+Route::get('/colors/{id}', [ProductColorsController::class, 'show']);
+Route::post('/colors', [ProductColorsController::class, 'create']);
+Route::delete('/colors/{id}', [ProductColorsController::class, 'destroy']);
 
-Route::get('/search/{keyword}', 'App\Http\Controllers\ProductController@search');
+// Coupons API routes
+Route::get('/coupon', [CouponController::class, 'index']);
+Route::get('/coupon/{id}', [CouponController::class, 'show']);
+Route::post('/coupon', [CouponController::class, 'store']);
+Route::post('/coupon/{code}', [CouponController::class, 'find']);
+Route::delete('/coupon/{id}', [CouponController::class, 'destroy']);
 
+// Order API routes
+Route::get('/orders', [OrderController::class, 'index']);
+Route::get('/orders/{order_id}', [OrderController::class, 'show']);
+Route::post('/orders', [OrderController::class, 'store']);
+Route::put('/orders/{order_id}', [OrderController::class, 'update']);
+Route::delete('/orders/{order_id}', [OrderController::class, 'destroy']);
 
-// product variations api routes
-Route::get('/variations', 'App\Http\Controllers\productVariants@index');
-Route::get('/variations/{product_id}', 'App\Http\Controllers\productVariants@find');
-// Route::get('/filters', 'App\Http\Controllers\productVariants@find');
-// color api routes
+// Notifications API routes
+Route::get('/notifications', [NotificationController::class, 'index']);
+Route::delete('/notifications/{id}', [NotificationController::class, 'destroy']);
+Route::delete('/notifications', [NotificationController::class, 'destroyALL']);
 
-Route::get('/colors', 'App\Http\Controllers\ProductColorsController@index');
-Route::get('/colors/{color_id}', 'App\Http\Controllers\ProductColorsController@show');
-Route::post('/colors', 'App\Http\Controllers\ProductColorsController@create');
-Route::delete('/colors/{color_id}', 'App\Http\Controllers\ProductColorsController@destroy');
-
-
-// sizes api routes
-
-Route::get('/sizes', 'App\Http\Controllers\ProductsizesController@index');
-Route::get('/sizes/{id}', 'App\Http\Controllers\ProductsizesController@show');
-Route::post('/sizes', 'App\Http\Controllers\ProductsizesController@create');
-Route::delete('/sizes/{id}', 'App\Http\Controllers\ProductsizesController@destroy');
-
-
-// colors api routes
-
-Route::get('/colors', 'App\Http\Controllers\ProductcolorsController@index');
-Route::get('/colors/{id}', 'App\Http\Controllers\ProductcolorsController@show');
-Route::post('/colors', 'App\Http\Controllers\ProductcolorsController@create');
-Route::delete('/colors/{id}', 'App\Http\Controllers\ProductcolorsController@destroy');
-
-// Coupons api routes
-
-Route::get('/coupon', 'App\Http\Controllers\CouponController@index');
-Route::get('/coupon/{id}', 'App\Http\Controllers\CouponController@show');
-Route::post('/coupon', 'App\Http\Controllers\CouponController@store');
-Route::post('/coupon/{code}', 'App\Http\Controllers\CouponController@find');
-Route::delete('/coupon/{id}', 'App\Http\Controllers\CouponController@destroy');
-
-
-
-// order api routes
-Route::get('/orders', 'App\Http\Controllers\OrderController@index');
-Route::get('/orders/{order_id}', 'App\Http\Controllers\OrderController@show');
-Route::post('/orders', 'App\Http\Controllers\OrderController@store');
-Route::put('/orders/{order_id}', 'App\Http\Controllers\OrderController@update');
-Route::delete('/orders/{order_id}', 'App\Http\Controllers\OrderController@destroy');
-
-// notifications api routes
-Route::get('/notifications', 'App\Http\Controllers\NotificationController@index');
-Route::delete('/notifications/{id}', 'App\Http\Controllers\NotificationController@destroy');
-Route::delete('/notifications', 'App\Http\Controllers\NotificationController@destroyALL');
-
-// payement api routes 
-Route::post('/stripe', 'App\Http\Controllers\CheckoutController@createPaymentIntent');
-
+// Payment API routes
+Route::post('/stripe', [CheckoutController::class, 'createPaymentIntent']);

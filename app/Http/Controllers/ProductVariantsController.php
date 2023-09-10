@@ -2,22 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\category;
+use App\Models\Category;
 use Illuminate\Http\Request;
 
-use App\Models\productColors;
+use App\Models\ProductColors;
 use App\Models\Products;
-use App\Models\productSizes;
+use App\Models\ProductSizes;
 use App\Models\ProductImage;
 
 
-class productVariants extends Controller
+class ProductVariantsController extends Controller
 {
     public function index()
     {
-        $colors = productColors::all();
-        $sizes = productSizes::all();
-        $category = category::all();
+        $colors = ProductColors::all();
+        $sizes = ProductSizes::all();
+        $category = Category::all();
 
         return response()->json([
             'colors' => $colors,
@@ -29,9 +29,9 @@ class productVariants extends Controller
 
     public function find(string $product_id)
     {
-        $colors = productColors::all();
-        $sizes = productSizes::all();
-        $category = category::all();
+        $colors = ProductColors::all();
+        $sizes = ProductSizes::all();
+        $category = Category::all();
         $product = Products::find($product_id);
 
 
@@ -46,8 +46,8 @@ class productVariants extends Controller
     // method for fetching the product and similar products
     public function findproductwithimages(string $product_id)
     {
-        $colors = productColors::all();
-        $sizes = productSizes::all();
+        $colors = ProductColors::all();
+        $sizes = ProductSizes::all();
         $product_images = ProductImage::where('product_id', $product_id)->get();
         $product = Products::find($product_id);
         
@@ -57,7 +57,7 @@ class productVariants extends Controller
         ->limit(4)
         ->get();
         
-        $category = category::where('category_id', $categoryId)->first();
+        $category = Category::where('category_id', $categoryId)->first();
 
     
         
